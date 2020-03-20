@@ -15,8 +15,10 @@ mitsubishi:
 - `temperature_entity` - separate unrelated temperature sensor entity, which will be used as part of climate entity (for observability in google home for example). For example if you have xiaomi bluetooth sensor in the room where AC is located, then measured temperature will be also visible in newly created climate entity as part of AC and will be accessible from google.
 - `humidity_entity` - separate unrelated humidity sensor entity, which will be used as part of climate entity (for observability in google home for example). For example if you have xiaomi bluetooth sensor in the room where AC is located, then measured humidity will be also visible in newly created climate entity as part of AC and will be accessible from google.
 
-### Configuration saving issues
-Integration saves wanted configuration in JSON file located under `/config/custom_components/mitsubishi/json/` so no need for input_select or input_number entities. It might happen that due to not found folder `json` configuration shall not be saved. To solve it, simply create `json` folder under `/config/custom_components/mitsubishi` and set rights for everyone to be able to modify contents of this folder. After first request to change data files with corresponding friendly names shall be created.
+### Configuration saving possible issues
+Integration saves wanted configuration in JSON file located under `/config/custom_components/mitsubishi/json/` so no need to use input_select or input_number entities. 
+It might happen that due to not found folder `json` configuration shall not be saved. To solve it, simply create `json` folder under `/config/custom_components/mitsubishi` and set rights for everyone to be able to modify contents of this folder. After first request to change data files with corresponding friendly names shall be created.
+Examples of JSON files are included in `json` folder in this repository.
 
 ### configuration.yaml entry example
 ```
