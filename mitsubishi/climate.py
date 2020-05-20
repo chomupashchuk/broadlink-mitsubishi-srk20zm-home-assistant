@@ -4,7 +4,7 @@ Adds support for the Mitsubishi AC
 from datetime import timedelta
 import logging
 
-from homeassistant.components.climate import ClimateDevice
+from homeassistant.components.climate import ClimateEntity
 from homeassistant.const import (
     ATTR_TEMPERATURE,
     CONF_NAME,
@@ -69,7 +69,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([MitsubishiThermostat(name, device)])
 
 
-class MitsubishiThermostat(ClimateDevice):
+class MitsubishiThermostat(ClimateEntity):
     """Representation of a Mitsubishi Thermostat."""
 
     def __init__(self, name, device):
