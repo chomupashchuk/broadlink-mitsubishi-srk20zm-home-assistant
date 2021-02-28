@@ -1,0 +1,9 @@
+{
+  "domain": "mitsubishi",
+  "name": "Mitsubishi Aircon",
+  "documentation": "https://github.com/chomupashchuk/broadlink-mitsubishi-srk20zm-home-assistant",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@chomupashchuk"],
+  "version": "1.0"
+}
