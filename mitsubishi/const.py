@@ -27,7 +27,7 @@ CLIMATES = "climates"
 
 HUMIDITY_ENTITY = "humidity_entity"
 TEMPERARURE_ENTITY = "temperature_entity"
-IP_ADDRESS = "ip_address"
+REMOTE_ENTITY = "remote_entity"
 
 CURRENT_HVAC_MAINTAINING = "maintaining"
 FAN_HIGHEST = "highest"

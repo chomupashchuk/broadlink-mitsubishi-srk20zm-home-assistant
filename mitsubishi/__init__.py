@@ -29,7 +29,7 @@ from .const import (
     HVAC_MODE_HEAT,
     HVAC_MODE_HEAT_COOL,
     HVAC_MODE_OFF,
-    IP_ADDRESS,
+    REMOTE_ENTITY,
     FAN_AUTO,
     HUMIDITY_ENTITY,
     TEMPERARURE_ENTITY,
@@ -56,7 +56,7 @@ DEFAULT_FAN_MODE = FAN_AUTO
 
 MITSUBISHI_SCHEMA = vol.Schema(
     {
-        vol.Required(IP_ADDRESS): cv.string,
+        vol.Required(REMOTE_ENTITY): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
         vol.Optional(TEMPERARURE_ENTITY, default=DEFAULT_TEMPERATURE_ENTITY): cv.entity_id,
         vol.Optional(HUMIDITY_ENTITY, default=DEFAULT_HUMIDITY_ENTITY): cv.entity_id,
@@ -71,7 +71,7 @@ CONFIG_SCHEMA = vol.Schema(
 class MitsubishiHandler():
     """Mitsubishi handler"""
     
-    def __init__(self, hass, device, name, ipaddr, temperature, humidity):
+    def __init__(self, hass, device, name, remote_entity, temperature, humidity):
         """Initialize."""
         self._config_data = {}
         self._device = device
@@ -79,7 +79,7 @@ class MitsubishiHandler():
         self._lock = threading.Lock()
         self._name = name
         self._file_name = '/config/custom_components/mitsubishi/json/' + name + '.json'
-        self._ip_address = ipaddr
+        self._remote_entity = remote_entity
         self._temperature_entity = temperature
         self._humidity_entity = humidity
 
@@ -172,12 +172,12 @@ class MitsubishiHandler():
                     ir_code = AC_CODES[set_hvac_mode][set_fan_mode][set_temperature]
                 if (PAR_HVAC_MODE in parameter_list and self._config_data[PAR_HVAC_MODE] == HVAC_MODE_OFF) or self._config_data[PAR_HVAC_MODE] != HVAC_MODE_OFF:
                     # data sent to AC
-                    self._hass.services.call('broadlink', 'send', {'host': self._ip_address, 'packet': ir_code}, False)
+                    self._hass.services.call('remote', 'send_command', {'entity_id': self._remote_entity, 'command': 'b64:'+ir_code}, False)
                 # store data
                 self._set_data_json()
                 _LOGGER.info("AC generated code {}".format(ir_code))
-            except:
-                _LOGGER.error("Unknown IR code")
+            except Exception as ex:
+                _LOGGER.error(f"Unknown IR code with exception: {ex}")
 
 def setup(hass, config):
     """Set up the Mitsubishi component."""
@@ -187,9 +187,9 @@ def setup(hass, config):
         name = device[CONF_NAME]
         temperature = device[TEMPERARURE_ENTITY]
         humidity = device[HUMIDITY_ENTITY]
-        ipaddr = device[IP_ADDRESS]
+        remote_entity = device[REMOTE_ENTITY]
         try:
-            api = MitsubishiHandler(hass, device=device, name=name, ipaddr=ipaddr, temperature=temperature, humidity=humidity)
+            api = MitsubishiHandler(hass, device=device, name=name, remote_entity=remote_entity, temperature=temperature, humidity=humidity)
             api.read_data_json()
         except:
             _LOGGER.error("unknown error", name)
